@@ -1,20 +1,13 @@
+import 'package:f_set/presentation/theme/app_theme.dart';
+import 'package:f_set/presentation/theme/scale.dart';
 import 'package:f_set/set.dart';
 import 'package:f_set/utils/hooks.dart';
+import 'package:f_set/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:supercharged/supercharged.dart';
-
-extension IterableExt<T> on Iterable<Iterable<T>> {
-  List<T> flatten() => expand((_) => _).toList();
-}
-
-const Map<ColorType, Color> _colorMap = {
-  ColorType.red: Colors.red,
-  ColorType.blue: Colors.blue,
-  ColorType.green: Colors.green,
-};
 
 enum AniProps { elevation, borderWidth }
 
@@ -38,48 +31,43 @@ class SetCardWidget extends HookWidget {
         ..addScene(begin: 0.milliseconds, duration: 1000.milliseconds)
             .animate(AniProps.elevation, tween: 1.0.tweenTo(8.0))
             .animate(AniProps.borderWidth, tween: 0.5.tweenTo(1)),
-      duration: Duration(milliseconds: 200),
+      duration: 200.milliseconds,
       dependentValue: highlight,
       onDependentValueChanged: () => highlight ? CustomAnimationControl.play : CustomAnimationControl.playReverse,
     );
 
     return AspectRatio(
       aspectRatio: 2.25 / 3.5,
-      child: Container(
-        child: HookAnimation<AniProps>(
-          hook: tweenHook,
-          builder: (context, child, TimelineValue<AniProps> value) {
-            return Container(
-              margin: EdgeInsets.all(4),
-              child: Material(
-                animationDuration: Duration.zero,
-                type: MaterialType.card,
-                elevation: value.get(AniProps.elevation),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  side: BorderSide(
-                    color: Colors.black,
-                    width: value.get(AniProps.borderWidth),
-                  ),
+      child: HookAnimation<AniProps>(
+        hook: tweenHook,
+        builder: (context, child, TimelineValue<AniProps> value) {
+          return Container(
+            margin: EdgeInsets.all(4.hs),
+            child: Material(
+              animationDuration: Duration.zero,
+              type: MaterialType.card,
+              elevation: value.get(AniProps.elevation),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.hs),
+                side: BorderSide(
+                  width: value.get(AniProps.borderWidth),
                 ),
-                child: child,
-                borderOnForeground: true,
-                clipBehavior: Clip.none,
               ),
-            );
-          },
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: List.generate(
-                  card.count,
-                  (index) => ShapeView(
-                        texture: card.texture,
-                        shape: card.shape,
-                        color: card.color,
-                      )).toList(),
+              child: child,
             ),
+          );
+        },
+        child: Padding(
+          padding: EdgeInsets.all(16.hs),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: List.generate(
+                card.count,
+                (index) => ShapeView(
+                      texture: card.texture,
+                      shape: card.shape,
+                      colorType: card.color,
+                    )).toList(),
           ),
         ),
       ),
@@ -90,13 +78,13 @@ class SetCardWidget extends HookWidget {
 class ShapeView extends StatelessWidget {
   final TextureType texture;
   final ShapeType shape;
-  final ColorType color;
+  final ColorType colorType;
 
   const ShapeView({
     Key? key,
     required this.texture,
     required this.shape,
-    required this.color,
+    required this.colorType,
   }) : super(key: key);
 
   @override
@@ -104,7 +92,7 @@ class ShapeView extends StatelessWidget {
     return AspectRatio(
       aspectRatio: 2.5,
       child: CustomPaint(
-        painter: ShapePainter(texture, shape, color),
+        painter: ShapePainter(texture, shape, colorType),
       ),
     );
   }
@@ -113,16 +101,18 @@ class ShapeView extends StatelessWidget {
 class ShapePainter extends CustomPainter {
   final TextureType texture;
   final ShapeType shape;
-  final ColorType color;
+  final ColorType colorType;
 
-  ShapePainter(this.texture, this.shape, this.color);
+  ShapePainter(this.texture, this.shape, this.colorType);
+
+  Color get color => AppTheme.cardColorMap[colorType]!;
 
   @override
   void paint(Canvas canvas, Size size) {
-    Path shape = getPath(size);
+    final shape = getPath(size);
 
-    Paint interiorPaint = getInteriorPaint(size);
-    Paint borderPaint = getBorderPaint(size);
+    final interiorPaint = getInteriorPaint(size);
+    final borderPaint = getBorderPaint(size);
     canvas.drawPath(shape, interiorPaint);
     canvas.drawPath(shape, borderPaint);
   }
@@ -138,7 +128,7 @@ class ShapePainter extends CustomPainter {
           ..close();
 
       case ShapeType.pill:
-        double r = size.height / 2;
+        final r = size.height / 2;
         return Path()
           ..moveTo(r, 0)
           ..lineTo(size.width - r, 0)
@@ -147,21 +137,21 @@ class ShapePainter extends CustomPainter {
           ..arcToPoint(Offset(r, 0), radius: Radius.circular(r));
 
       case ShapeType.squiggly:
-        Offset p0 = Offset(0, size.height * .6);
-        Offset p1 = Offset(size.width * .55, size.height * .15);
-        Offset p2 = Offset(size.width, size.height * .4);
-        Offset p3 = Offset(size.width * .45, size.height * .85);
+        final Offset p0 = Offset(0, size.height * .6);
+        final Offset p1 = Offset(size.width * .55, size.height * .15);
+        final Offset p2 = Offset(size.width, size.height * .4);
+        final Offset p3 = Offset(size.width * .45, size.height * .85);
 
-        Offset slant = Offset.fromDirection(.6);
+        final Offset slant = Offset.fromDirection(.6);
 
-        Offset cp0 = p0 - Offset(0, size.height * .6);
-        Offset cp1 = p1 - slant * size.height * .8;
-        Offset cp2 = p1 + slant * size.height * .5;
-        Offset cp3 = p2 - Offset(0, size.height * 1.1);
-        Offset cp4 = p2 + Offset(0, size.height * .6);
-        Offset cp5 = p3 + slant * size.height * .8;
-        Offset cp6 = p3 - slant * size.height * .5;
-        Offset cp7 = p0 + Offset(0, size.height * 1.1);
+        final Offset cp0 = p0 - Offset(0, size.height * .6);
+        final Offset cp1 = p1 - slant * size.height * .8;
+        final Offset cp2 = p1 + slant * size.height * .5;
+        final Offset cp3 = p2 - Offset(0, size.height * 1.1);
+        final Offset cp4 = p2 + Offset(0, size.height * .6);
+        final Offset cp5 = p3 + slant * size.height * .8;
+        final Offset cp6 = p3 - slant * size.height * .5;
+        final Offset cp7 = p0 + Offset(0, size.height * 1.1);
 
         return Path()
           ..moveTo(p0.dx, p0.dy)
@@ -177,23 +167,21 @@ class ShapePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(ShapePainter oldDelegate) {
-    return oldDelegate.texture != texture || oldDelegate.shape != shape || oldDelegate.color != color;
+    return oldDelegate.texture != texture || oldDelegate.shape != shape || oldDelegate.colorType != colorType;
   }
 
   Paint getInteriorPaint(Size size) {
     switch (texture) {
       case TextureType.filled:
-        return Paint()..color = _colorMap[color]!;
+        return Paint()..color = color;
       case TextureType.outline:
         return Paint()..color = Colors.transparent;
       case TextureType.banded:
         return Paint()
-          ..color = _colorMap[color]!
+          ..color = color
           ..shader = LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: getColors(24),
-            stops: getStops(24),
+            colors: getColors(16, color),
+            stops: getStops(16),
           ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
       default:
         return Paint();
@@ -202,41 +190,44 @@ class ShapePainter extends CustomPainter {
 
   Paint getBorderPaint(Size size) {
     return Paint()
-      ..color = _colorMap[color]!
+      ..color = color
       ..strokeWidth = 2.0
       ..style = PaintingStyle.stroke
       ..strokeJoin = StrokeJoin.round;
   }
+}
 
-  List<Color> getColors(int numberOfBands) {
-    return List.generate(
-          numberOfBands,
-          (index) => [
-            Colors.transparent,
-            Colors.transparent,
-            _colorMap[color]!,
-            _colorMap[color]!,
-          ],
-        ).flatten() +
-        [
-          Colors.transparent,
-          Colors.transparent,
-        ];
-  }
+class EmptyCard extends StatelessWidget {
+  const EmptyCard({
+    Key? key,
+    this.borderColor = AppTheme.gray3,
+    this.color = Colors.white,
+    this.child,
+  }) : super(key: key);
 
-  List<double> getStops(int numberOfBands) {
-    return List.generate(
-          numberOfBands,
-          (index) {
-            double start = index / (numberOfBands + .5);
-            double end = (index + 1) / (numberOfBands + .5);
-            double half = start + (end - start) / 2;
-            return [start, half, half, end];
-          },
-        ).flatten() +
-        [
-          numberOfBands / (numberOfBands + .5),
-          1.0,
-        ];
+  final Color borderColor;
+  final Color color;
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 2.25 / 3.5,
+      child: Container(
+        margin: const EdgeInsets.all(4),
+        decoration: ShapeDecoration(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: BorderSide(
+              color: borderColor,
+            ),
+          ),
+          color: color
+        ),
+        child: Center(
+          child: child,
+        ),
+      ),
+    );
   }
 }

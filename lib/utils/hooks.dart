@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:simple_animations/simple_animations.dart';
 
-TweenAnimationHook<T, TweenType> useTweenAnimation<T, TweenType extends Animatable<TimelineValue>>({
+TweenAnimationHook<TweenType> useTweenAnimation<T, TweenType extends Animatable<TimelineValue>>({
   required TweenType tween,
   required T dependentValue,
   required CustomAnimationControl Function() onDependentValueChanged,
@@ -28,7 +28,7 @@ TweenAnimationHook<T, TweenType> useTweenAnimation<T, TweenType extends Animatab
   );
 }
 
-class TweenAnimationHook<T, TweenType> {
+class TweenAnimationHook<TweenType> {
   TweenAnimationHook({
     required this.control,
     required this.tween,
@@ -59,7 +59,7 @@ class HookAnimation<PropType> extends StatelessWidget {
   }) : super(key: key);
 
   final Widget child;
-  final TweenAnimationHook hook;
+  final TweenAnimationHook<Animatable<TimelineValue<PropType>>> hook;
   final AnimatedWidgetBuilder<TimelineValue<PropType>> builder;
 
   @override
@@ -70,7 +70,6 @@ class HookAnimation<PropType> extends StatelessWidget {
       control: hook.control,
       curve: hook.curve,
       delay: hook.delay,
-      developerMode: false,
       startPosition: hook.startPosition,
       fps: hook.fps,
       key: hook.key,

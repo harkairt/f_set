@@ -10,54 +10,70 @@ class GameState with _$GameState {
   const factory GameState({
     @Default(<SetCard>[]) List<SetCard> deck,
     @Default(<SetCard?>[]) List<SetCard?> board,
-    @Default(<SetCard?>[]) List<SetCard?> pickedCards,
     @Default(<List<SetCard>>[]) List<List<SetCard>> foundSets,
   }) = _SetCubitState;
 
   List<List<SetCard>> get setsOnBoard => board.sets;
   List<SetCard> get relevantCards => setsOnBoard.flattened.toList();
-  int get boardSetCount => board.setCount;
   List<SetCard>? get lastFoundSetOrNull => foundSets.lastOrNull;
+  bool get canDraw3Extra => board.effectiveLength == 12 && deck.length >= 3;
 }
 
 class GameCubit extends Cubit<GameState> {
-  GameCubit() : super(GameState());
+  GameCubit() : super(const GameState());
 
-  void initialize() {
-    final deck = newDeck()..safeRemoveRange(0, 18);
+  void initializeGame() {
+    final deck = newDeck()..shuffle();
     final board = deck.draw(12)..shuffle();
 
     emit(state.copyWith(
       deck: deck,
       board: board,
+      foundSets: [],
     ));
   }
 
-  void updatePickedCards(List<SetCard?> cards) {
-    emit(state.copyWith(pickedCards: cards));
+  void draw3Extra() {
+    if (!state.canDraw3Extra) {
+      return;
+    }
+
+    final newDeck = [...state.deck];
+    final extraCards = newDeck.draw(3);
+
+    emit(state.copyWith(
+      deck: newDeck,
+      board: [...state.board, ...extraCards],
+    ));
   }
 
-  void checkSet() {
-    if (state.pickedCards.isSet) {
-      handleSet(state.pickedCards.cast<SetCard>());
+  void checkSet(List<SetCard?> cards) {
+    if (cards.isSet) {
+      _handleSet(cards.cast<SetCard>());
     }
   }
 
-  void handleSet(List<SetCard> setCards) {
+  void _handleSet(List<SetCard> setCards) {
     final newDeck = [...state.deck];
     final newBoard = [...state.board];
 
-    print('_____ ${setCards.length}');
+    final had15CardsOnBoard = newBoard.effectiveLength == 15;
+
     setCards.forEach((setCard) {
-      final newCard = newDeck.draw(1).firstOrNull;
-      newBoard.replaceItemWith(setCard, newCard);
+      if (had15CardsOnBoard) {
+        newBoard.replaceItemWithNull(setCard);
+      } else {
+        final newCard = newDeck.draw(1).firstOrNull;
+        newBoard.replaceItemWith(setCard, newCard);
+      }
     });
+
+    newBoard.removeWhere((card) => card == null);
 
     emit(state.copyWith(
       deck: newDeck,
       board: newBoard,
       foundSets: [...state.foundSets, setCards],
-      // pickedCards: []
     ));
   }
 }

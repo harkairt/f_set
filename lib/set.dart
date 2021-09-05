@@ -4,7 +4,7 @@ import 'package:collection/collection.dart';
 
 enum ShapeType { diamond, squiggly, pill }
 enum TextureType { outline, banded, filled }
-enum ColorType { red, green, blue }
+enum ColorType { yellow, green, blue }
 
 class SetCard {
   final TextureType texture;
@@ -14,6 +14,7 @@ class SetCard {
 
   SetCard(this.texture, this.shape, this.color, this.count);
 }
+
 
 extension ListExtensions<T> on List<T?> {
   void replaceFirstNullOrAdd(T item) {
@@ -34,7 +35,7 @@ extension ListExtensions<T> on List<T?> {
     }
   }
 
-  void replaceItemWithNull(T item) => this.replaceItemWith(item, null);
+  void replaceItemWithNull(T item) => replaceItemWith(item, null);
 
   List<T> draw(int count) {
     final result = take(count).cast<T>().toList();
@@ -51,36 +52,36 @@ extension ListExtensions<T> on List<T?> {
 
 extension NullableSetCardIterableExtensions on Iterable<SetCard?> {
   bool get isSet {
-    if (this.length != 3 || this.any((element) => element == null)) {
+    if (length != 3 || any((element) => element == null)) {
       return false;
     }
 
-    final nonNullable = this.cast<SetCard>();
+    final nonNullable = cast<SetCard>();
     return nonNullable.isSet;
   }
 
   List<List<SetCard>> get sets {
-    final cards = this.where((element) => element != null).toList().cast<SetCard>();
+    final cards = where((element) => element != null).toList().cast<SetCard>();
     return cards.sets;
   }
 
   int get colors {
-    final cards = this.where((element) => element != null).toList().cast<SetCard>();
+    final cards = where((element) => element != null).toList().cast<SetCard>();
     return cards.toList().groupListsBy((i) => i.color).length;
   }
 
   int get shapes {
-    final cards = this.where((element) => element != null).toList().cast<SetCard>();
+    final cards = where((element) => element != null).toList().cast<SetCard>();
     return cards.toList().groupListsBy((i) => i.shape).length;
   }
 
   int get count {
-    final cards = this.where((element) => element != null).toList().cast<SetCard>();
+    final cards = where((element) => element != null).toList().cast<SetCard>();
     return cards.toList().groupListsBy((i) => i.count).length;
   }
 
   int get textures {
-    final cards = this.where((element) => element != null).toList().cast<SetCard>();
+    final cards = where((element) => element != null).toList().cast<SetCard>();
     return cards.toList().groupListsBy((i) => i.texture).length;
   }
 
@@ -89,16 +90,16 @@ extension NullableSetCardIterableExtensions on Iterable<SetCard?> {
 
 extension SetCardIterableExtensions on Iterable<SetCard> {
   bool get isSet {
-    if (this.length != 3) {
+    if (length != 3) {
       return false;
     }
 
-    Set shapes = Set<ShapeType>();
-    Set textures = Set<TextureType>();
-    Set colors = Set<ColorType>();
-    Set counts = Set<int>();
+    final shapes = <ShapeType>{};
+    final textures = <TextureType>{};
+    final colors = <ColorType>{};
+    final counts = <int>{};
 
-    for (SetCard c in this) {
+    for (final c in this) {
       shapes.add(c.shape);
       textures.add(c.texture);
       colors.add(c.color);
@@ -112,9 +113,12 @@ extension SetCardIterableExtensions on Iterable<SetCard> {
   }
 
   List<List<SetCard>> get sets {
-    List<List<SetCard>> result = [];
+    final List<List<SetCard>> result = [];
+    if (length < 3) {
+      return result;
+    }
 
-    final combinations = Combinations(3, this.toList());
+    final combinations = Combinations(3, toList());
     for (final possibleSet in combinations()) {
       final isSet = possibleSet.isSet;
       if (isSet) {
@@ -146,7 +150,7 @@ extension SetCardIterableExtensions on Iterable<SetCard> {
 
 void getAllSets(int index, List<SetCard> currentSet, List<SetCard> cards, List<List<SetCard>> allSets) {
   for (int i = index; i < cards.length; i++) {
-    List<SetCard> potentialSet = currentSet + [cards[i]];
+    final List<SetCard> potentialSet = currentSet + [cards[i]];
     if (potentialSet.length == 3) {
       if (potentialSet.isSet) {
         allSets.add(potentialSet);
@@ -158,8 +162,8 @@ void getAllSets(int index, List<SetCard> currentSet, List<SetCard> cards, List<L
 }
 
 bool doSetsOverlap(List<List<SetCard>> sets, List<SetCard> candidateSet) {
-  List<SetCard> allCards = sets.expand((c) => c).toList() + candidateSet;
-  List<List<SetCard>> possibleSets = [];
+  final List<SetCard> allCards = sets.expand((c) => c).toList() + candidateSet;
+  final List<List<SetCard>> possibleSets = [];
   getAllSets(0, [], allCards, possibleSets);
   return !(possibleSets.length == sets.length + 1);
 }
@@ -173,9 +177,9 @@ void getNonOverlappingSets(
   if (results.length == desiredSets) {
     return;
   }
-  for (SetCard card in allCards) {
+  for (final card in allCards) {
     if (!currentSet.contains(card)) {
-      List<SetCard> potentialSet = currentSet + [card];
+      final List<SetCard> potentialSet = currentSet + [card];
       if (potentialSet.length == 3) {
         if (potentialSet.isSet && !doSetsOverlap(results, potentialSet)) {
           results.add(potentialSet);
@@ -188,10 +192,10 @@ void getNonOverlappingSets(
 }
 
 List<SetCard> newDeck() {
-  List<SetCard> cards = [];
-  for (ShapeType shape in ShapeType.values) {
-    for (TextureType texture in TextureType.values) {
-      for (ColorType color in ColorType.values) {
+  final List<SetCard> cards = [];
+  for (final shape in ShapeType.values) {
+    for (final texture in TextureType.values) {
+      for (final color in ColorType.values) {
         for (int count = 1; count <= 3; count++) {
           cards.add(SetCard(texture, shape, color, count));
         }
