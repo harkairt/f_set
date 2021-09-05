@@ -10,12 +10,10 @@ class GameState with _$GameState {
   const factory GameState({
     @Default(<SetCard>[]) List<SetCard> deck,
     @Default(<SetCard?>[]) List<SetCard?> board,
-    @Default(<List<SetCard>>[]) List<List<SetCard>> foundSets,
   }) = _SetCubitState;
 
   List<List<SetCard>> get setsOnBoard => board.sets;
-  List<SetCard> get relevantCards => setsOnBoard.flattened.toList();
-  List<SetCard>? get lastFoundSetOrNull => foundSets.lastOrNull;
+  List<SetCard> get setCards => setsOnBoard.flattened.toList();
   bool get canDraw3Extra => board.effectiveLength == 12 && deck.length >= 3;
 }
 
@@ -29,7 +27,6 @@ class GameCubit extends Cubit<GameState> {
     emit(state.copyWith(
       deck: deck,
       board: board,
-      foundSets: [],
     ));
   }
 
@@ -73,7 +70,6 @@ class GameCubit extends Cubit<GameState> {
     emit(state.copyWith(
       deck: newDeck,
       board: newBoard,
-      foundSets: [...state.foundSets, setCards],
     ));
   }
 }

@@ -18,12 +18,10 @@ class _$GameStateTearOff {
 
   _SetCubitState call(
       {List<SetCard> deck = const <SetCard>[],
-      List<SetCard?> board = const <SetCard?>[],
-      List<List<SetCard>> foundSets = const <List<SetCard>>[]}) {
+      List<SetCard?> board = const <SetCard?>[]}) {
     return _SetCubitState(
       deck: deck,
       board: board,
-      foundSets: foundSets,
     );
   }
 }
@@ -35,7 +33,6 @@ const $GameState = _$GameStateTearOff();
 mixin _$GameState {
   List<SetCard> get deck => throw _privateConstructorUsedError;
   List<SetCard?> get board => throw _privateConstructorUsedError;
-  List<List<SetCard>> get foundSets => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $GameStateCopyWith<GameState> get copyWith =>
@@ -46,10 +43,7 @@ mixin _$GameState {
 abstract class $GameStateCopyWith<$Res> {
   factory $GameStateCopyWith(GameState value, $Res Function(GameState) then) =
       _$GameStateCopyWithImpl<$Res>;
-  $Res call(
-      {List<SetCard> deck,
-      List<SetCard?> board,
-      List<List<SetCard>> foundSets});
+  $Res call({List<SetCard> deck, List<SetCard?> board});
 }
 
 /// @nodoc
@@ -64,7 +58,6 @@ class _$GameStateCopyWithImpl<$Res> implements $GameStateCopyWith<$Res> {
   $Res call({
     Object? deck = freezed,
     Object? board = freezed,
-    Object? foundSets = freezed,
   }) {
     return _then(_value.copyWith(
       deck: deck == freezed
@@ -75,10 +68,6 @@ class _$GameStateCopyWithImpl<$Res> implements $GameStateCopyWith<$Res> {
           ? _value.board
           : board // ignore: cast_nullable_to_non_nullable
               as List<SetCard?>,
-      foundSets: foundSets == freezed
-          ? _value.foundSets
-          : foundSets // ignore: cast_nullable_to_non_nullable
-              as List<List<SetCard>>,
     ));
   }
 }
@@ -90,10 +79,7 @@ abstract class _$SetCubitStateCopyWith<$Res>
           _SetCubitState value, $Res Function(_SetCubitState) then) =
       __$SetCubitStateCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {List<SetCard> deck,
-      List<SetCard?> board,
-      List<List<SetCard>> foundSets});
+  $Res call({List<SetCard> deck, List<SetCard?> board});
 }
 
 /// @nodoc
@@ -110,7 +96,6 @@ class __$SetCubitStateCopyWithImpl<$Res> extends _$GameStateCopyWithImpl<$Res>
   $Res call({
     Object? deck = freezed,
     Object? board = freezed,
-    Object? foundSets = freezed,
   }) {
     return _then(_SetCubitState(
       deck: deck == freezed
@@ -121,10 +106,6 @@ class __$SetCubitStateCopyWithImpl<$Res> extends _$GameStateCopyWithImpl<$Res>
           ? _value.board
           : board // ignore: cast_nullable_to_non_nullable
               as List<SetCard?>,
-      foundSets: foundSets == freezed
-          ? _value.foundSets
-          : foundSets // ignore: cast_nullable_to_non_nullable
-              as List<List<SetCard>>,
     ));
   }
 }
@@ -133,9 +114,7 @@ class __$SetCubitStateCopyWithImpl<$Res> extends _$GameStateCopyWithImpl<$Res>
 
 class _$_SetCubitState extends _SetCubitState {
   const _$_SetCubitState(
-      {this.deck = const <SetCard>[],
-      this.board = const <SetCard?>[],
-      this.foundSets = const <List<SetCard>>[]})
+      {this.deck = const <SetCard>[], this.board = const <SetCard?>[]})
       : super._();
 
   @JsonKey(defaultValue: const <SetCard>[])
@@ -144,13 +123,10 @@ class _$_SetCubitState extends _SetCubitState {
   @JsonKey(defaultValue: const <SetCard?>[])
   @override
   final List<SetCard?> board;
-  @JsonKey(defaultValue: const <List<SetCard>>[])
-  @override
-  final List<List<SetCard>> foundSets;
 
   @override
   String toString() {
-    return 'GameState(deck: $deck, board: $board, foundSets: $foundSets)';
+    return 'GameState(deck: $deck, board: $board)';
   }
 
   @override
@@ -160,18 +136,14 @@ class _$_SetCubitState extends _SetCubitState {
             (identical(other.deck, deck) ||
                 const DeepCollectionEquality().equals(other.deck, deck)) &&
             (identical(other.board, board) ||
-                const DeepCollectionEquality().equals(other.board, board)) &&
-            (identical(other.foundSets, foundSets) ||
-                const DeepCollectionEquality()
-                    .equals(other.foundSets, foundSets)));
+                const DeepCollectionEquality().equals(other.board, board)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(deck) ^
-      const DeepCollectionEquality().hash(board) ^
-      const DeepCollectionEquality().hash(foundSets);
+      const DeepCollectionEquality().hash(board);
 
   @JsonKey(ignore: true)
   @override
@@ -180,18 +152,14 @@ class _$_SetCubitState extends _SetCubitState {
 }
 
 abstract class _SetCubitState extends GameState {
-  const factory _SetCubitState(
-      {List<SetCard> deck,
-      List<SetCard?> board,
-      List<List<SetCard>> foundSets}) = _$_SetCubitState;
+  const factory _SetCubitState({List<SetCard> deck, List<SetCard?> board}) =
+      _$_SetCubitState;
   const _SetCubitState._() : super._();
 
   @override
   List<SetCard> get deck => throw _privateConstructorUsedError;
   @override
   List<SetCard?> get board => throw _privateConstructorUsedError;
-  @override
-  List<List<SetCard>> get foundSets => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$SetCubitStateCopyWith<_SetCubitState> get copyWith =>

@@ -1,4 +1,3 @@
-import 'package:entry/entry.dart';
 import 'package:f_set/presentation/theme/app_theme.dart';
 import 'package:f_set/presentation/theme/scale.dart';
 import 'package:f_set/set.dart';
