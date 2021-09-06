@@ -1,3 +1,4 @@
+import 'package:f_set/presentation/hero.dart';
 import 'package:f_set/presentation/theme/app_theme.dart';
 import 'package:f_set/presentation/theme/scale.dart';
 import 'package:f_set/set.dart';
@@ -68,18 +69,21 @@ class MenuScreen extends StatelessWidget {
                         child: const TypeScale.h3(
                           Text('Learn'),
                         ),
-                        onPressed: () => context.router.navigate(const InstructionsRoute()),
+                        onPressed: () => context.router.navigate(const InstructionsRoute()),  
                       ),
                       SizedBox(height: 8.hs),
-                      OutlinedButton(
-                        child: const TypeScale.h3(
-                          Text('High scores'),
+                      MaterialHero(
+                        tag: 'yes',
+                        child: OutlinedButton(
+                          child: const TypeScale.h3(
+                            Text('High scores'),
+                          ),
+                          onPressed: () => context.router.navigate(const HighScoresRoute()),
                         ),
-                        onPressed: () => context.router.navigate(const HighScoresRoute()),
                       ),
                     ],
                   ),
-                ),
+                )
               ),
               const Spacer(flex: 5),
             ],

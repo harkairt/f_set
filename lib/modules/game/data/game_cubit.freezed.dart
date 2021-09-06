@@ -13,8 +13,8 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$GameStateTearOff {
-  const _$GameStateTearOff();
+class _$GameCubitStateTearOff {
+  const _$GameCubitStateTearOff();
 
   _SetCubitState call(
       {List<SetCard> deck = const <SetCard>[],
@@ -27,32 +27,34 @@ class _$GameStateTearOff {
 }
 
 /// @nodoc
-const $GameState = _$GameStateTearOff();
+const $GameCubitState = _$GameCubitStateTearOff();
 
 /// @nodoc
-mixin _$GameState {
+mixin _$GameCubitState {
   List<SetCard> get deck => throw _privateConstructorUsedError;
   List<SetCard?> get board => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $GameStateCopyWith<GameState> get copyWith =>
+  $GameCubitStateCopyWith<GameCubitState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $GameStateCopyWith<$Res> {
-  factory $GameStateCopyWith(GameState value, $Res Function(GameState) then) =
-      _$GameStateCopyWithImpl<$Res>;
+abstract class $GameCubitStateCopyWith<$Res> {
+  factory $GameCubitStateCopyWith(
+          GameCubitState value, $Res Function(GameCubitState) then) =
+      _$GameCubitStateCopyWithImpl<$Res>;
   $Res call({List<SetCard> deck, List<SetCard?> board});
 }
 
 /// @nodoc
-class _$GameStateCopyWithImpl<$Res> implements $GameStateCopyWith<$Res> {
-  _$GameStateCopyWithImpl(this._value, this._then);
+class _$GameCubitStateCopyWithImpl<$Res>
+    implements $GameCubitStateCopyWith<$Res> {
+  _$GameCubitStateCopyWithImpl(this._value, this._then);
 
-  final GameState _value;
+  final GameCubitState _value;
   // ignore: unused_field
-  final $Res Function(GameState) _then;
+  final $Res Function(GameCubitState) _then;
 
   @override
   $Res call({
@@ -74,7 +76,7 @@ class _$GameStateCopyWithImpl<$Res> implements $GameStateCopyWith<$Res> {
 
 /// @nodoc
 abstract class _$SetCubitStateCopyWith<$Res>
-    implements $GameStateCopyWith<$Res> {
+    implements $GameCubitStateCopyWith<$Res> {
   factory _$SetCubitStateCopyWith(
           _SetCubitState value, $Res Function(_SetCubitState) then) =
       __$SetCubitStateCopyWithImpl<$Res>;
@@ -83,7 +85,8 @@ abstract class _$SetCubitStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$SetCubitStateCopyWithImpl<$Res> extends _$GameStateCopyWithImpl<$Res>
+class __$SetCubitStateCopyWithImpl<$Res>
+    extends _$GameCubitStateCopyWithImpl<$Res>
     implements _$SetCubitStateCopyWith<$Res> {
   __$SetCubitStateCopyWithImpl(
       _SetCubitState _value, $Res Function(_SetCubitState) _then)
@@ -126,7 +129,7 @@ class _$_SetCubitState extends _SetCubitState {
 
   @override
   String toString() {
-    return 'GameState(deck: $deck, board: $board)';
+    return 'GameCubitState(deck: $deck, board: $board)';
   }
 
   @override
@@ -151,7 +154,7 @@ class _$_SetCubitState extends _SetCubitState {
       __$SetCubitStateCopyWithImpl<_SetCubitState>(this, _$identity);
 }
 
-abstract class _SetCubitState extends GameState {
+abstract class _SetCubitState extends GameCubitState {
   const factory _SetCubitState({List<SetCard> deck, List<SetCard?> board}) =
       _$_SetCubitState;
   const _SetCubitState._() : super._();

@@ -49,9 +49,7 @@ class SetCardWidget extends HookWidget {
               elevation: value.get(AniProps.elevation),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.hs),
-                side: BorderSide(
-                  width: value.get(AniProps.borderWidth),
-                ),
+                side: BorderSide(width: value.get(AniProps.borderWidth), color: AppTheme.of(context).cardBorderColor),
               ),
               child: child,
             ),
@@ -200,33 +198,35 @@ class ShapePainter extends CustomPainter {
 class EmptyCard extends StatelessWidget {
   const EmptyCard({
     Key? key,
-    this.borderColor = AppTheme.gray3,
-    this.color = Colors.white,
+    this.borderColor,
+    this.borderWidth = 1,
+    this.color,
     this.child,
   }) : super(key: key);
 
-  final Color borderColor;
-  final Color color;
+  final Color? borderColor;
+  final double borderWidth;
+  final Color? color;
   final Widget? child;
 
   @override
   Widget build(BuildContext context) {
+    final color = this.color ?? AppTheme.of(context).cardBackgroundColor;
+    debugPrint('color $color');
+    final borderColor = this.borderColor ?? AppTheme.of(context).cardSilhouetteBorderColor;
+
     return AspectRatio(
       aspectRatio: 2.25 / 3.5,
       child: Container(
-        margin: const EdgeInsets.all(4),
+        margin: EdgeInsets.all(4.hs),
         decoration: ShapeDecoration(
+          color: color,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: BorderSide(
-              color: borderColor,
-            ),
+            borderRadius: BorderRadius.circular(8.hs),
+            side: BorderSide(color: borderColor, width: borderWidth),
           ),
-          color: color
         ),
-        child: Center(
-          child: child,
-        ),
+        child: Center(child: child),
       ),
     );
   }

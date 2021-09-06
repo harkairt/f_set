@@ -7,9 +7,9 @@
 import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
 
-import '../screens/game_screen.dart' as _i5;
-import '../screens/high_scores_screen.dart' as _i6;
-import '../screens/instructions_screen.dart' as _i4;
+import '../../modules/game/game_screen.dart' as _i5;
+import '../../modules/high_scores/high_scores_screen.dart' as _i6;
+import '../../modules/instructions/instructions_screen.dart' as _i4;
 import '../screens/menu_screen.dart' as _i3;
 
 class AppAutoRouter extends _i1.RootStackRouter {

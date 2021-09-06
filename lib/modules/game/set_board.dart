@@ -1,7 +1,7 @@
-import 'package:f_set/data/game_cubit.dart';
-import 'package:f_set/presentation/card_grid.dart';
+import 'package:f_set/modules/game/card_grid.dart';
+import 'package:f_set/modules/game/data/game_cubit.dart';
+import 'package:f_set/modules/game/set_card_widget.dart';
 import 'package:f_set/presentation/set_card_row.dart';
-import 'package:f_set/presentation/set_card_widget.dart';
 import 'package:f_set/presentation/theme/app_theme.dart';
 import 'package:f_set/utils/extensions.dart';
 import 'package:f_set/presentation/theme/scale.dart';
@@ -50,27 +50,28 @@ class SetBoard extends HookWidget {
                   flex: 8,
                   child: CardGrid(
                     cards: context.select((GameCubit cubit) => cubit.state.board),
-                    selectedCards: pickedCards.value,
+                    highlightedCards: pickedCards.value,
                     onCardPressed: onCardPressed,
                   ),
                 ),
                 Expanded(
                   flex: 4,
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () => pickedCards.value = [],
-                    child: _InfoPanel(requestHint: () {
+                  child: _InfoPanel(
+                    requestHint: () {
                       final setCards = context.read<GameCubit>().state.setCards..shuffle();
                       if (setCards.effectiveLength > 0) {
                         pickedCards.value = [setCards.first];
                       }
-                    }),
+                    },
                   ),
                 ),
               ],
             ),
           ),
-          _PickedCardInfo(cards: pickedCards.value)
+          _PickedCardInfo(
+            cards: pickedCards.value,
+            onCardPressed: (card) => pickedCards.value = [...pickedCards.value]..replaceItemWithNull(card),
+          )
         ],
       ),
     );
@@ -166,43 +167,40 @@ class _Draw3ExtraButton extends StatelessWidget {
       builder: (context) {
         final canDraw = context.select((GameCubit cubit) => cubit.state.canDraw3Extra);
 
-        return Align(
-          child: AnimatedOpacity(
-            duration: 400.milliseconds,
-            opacity: canDraw ? 1 : 0,
-            child: Padding(
-              padding: EdgeInsets.only(left: 8.hs),
-              child: SizedBox(
-                width: 50.hs,
-                child: Transform.rotate(
-                  angle: 10.degrees,
-                  child: Stack(
-                    children: [
-                      Transform.rotate(
-                        origin: Offset(0, 50.hs),
-                        angle: -14.degrees,
-                        child: const EmptyCard(borderColor: Colors.grey),
-                      ),
-                      Transform.rotate(
-                        origin: Offset(0, 50.hs),
-                        angle: -8.degrees,
-                        child: const EmptyCard(borderColor: Colors.grey),
-                      ),
-                      AspectRatio(
-                        aspectRatio: 2 / 3,
-                        child: OutlinedButton(
-                          onPressed: context.read<GameCubit>().draw3Extra,
-                          child: const Text('+3'),
-                          style: ButtonStyle(
-                            elevation: MaterialStateProperty.all(2),
-                            backgroundColor: MaterialStateProperty.all(Colors.white),
-                            padding: MaterialStateProperty.all(EdgeInsets.zero),
-                          ),
+        return AnimatedOpacity(
+          duration: 400.milliseconds,
+          opacity: canDraw ? 1 : 0,
+          child: SizedBox(
+            width: 50.hs,
+            child: Transform.rotate(
+              angle: 8.degrees,
+              child: Stack(
+                children: [
+                  Transform.rotate(
+                    alignment: Alignment.bottomLeft,
+                    angle: -16.degrees,
+                    child: EmptyCard(borderWidth: 0.5, borderColor: AppTheme.of(context).cardBorderColor),
+                  ),
+                  Transform.rotate(
+                    alignment: Alignment.bottomLeft,
+                    angle: -8.degrees,
+                    child: EmptyCard(borderWidth: 0.5, borderColor: AppTheme.of(context).cardBorderColor),
+                  ),
+                  AspectRatio(
+                    aspectRatio: 2.25 / 3.5,
+                    child: Padding(
+                      padding: EdgeInsets.all(2.hs),
+                      child: OutlinedButton(
+                        onPressed: context.read<GameCubit>().draw3Extra,
+                        child: const Text('+3'),
+                        style: ButtonStyle(
+                          elevation: MaterialStateProperty.all(6),
+                          padding: MaterialStateProperty.all(EdgeInsets.zero),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ),
@@ -213,9 +211,14 @@ class _Draw3ExtraButton extends StatelessWidget {
 }
 
 class _PickedCardInfo extends StatelessWidget {
-  const _PickedCardInfo({Key? key, this.cards = const []}) : super(key: key);
+  const _PickedCardInfo({
+    Key? key,
+    this.cards = const [],
+    this.onCardPressed,
+  }) : super(key: key);
 
   final List<SetCard?> cards;
+  final Function(SetCard)? onCardPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -226,6 +229,7 @@ class _PickedCardInfo extends StatelessWidget {
           flex: 8,
           child: SetCardRow(
             cards: cards,
+            onCardPressed: onCardPressed,
           ),
         ),
         Expanded(
@@ -286,7 +290,8 @@ class _PropertyInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color color = Colors.black;
+    final onPrimary = AppTheme.of(context).onPrimary;
+    Color color = onPrimary;
     if (colorize) {
       if (count == 2) {
         color = Colors.red;
@@ -300,7 +305,7 @@ class _PropertyInfo extends StatelessWidget {
         TextSpan(text: '$count ', style: AppTheme.of(context).bodyMono.copyWith(color: color)),
         TextSpan(
           text: count == 1 ? singularName : pluralName ?? singularName,
-          style: AppTheme.of(context).bodyMono.copyWith(color: Colors.black),
+          style: AppTheme.of(context).bodyMono.copyWith(color: onPrimary),
         ),
       ]),
     );

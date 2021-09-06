@@ -8,15 +8,13 @@ Warning beforehand: Flutter is more verbose. It can be daunting at first to look
 But it is also more straightforward, the intention is clearer (MainAxisAlignment, CrossAxisAlignment)
 
 
-
 Talk about
 1. Cubit
    1. context.select / context.read
-2. Hooks 
-3. freezed
+2. freezed
+3. Hooks
 
 Exercises
-
 
 1. StaggeredAnimation of the grid
 2. LoadableResource/ApiService - High scores
@@ -32,3 +30,32 @@ leírás
 
 persistency
 
+
+
+
+dart featurek
+
+extension funct, 
+..
+
+code generation (hiding them)
+pubspec.yaml -> package.json
+
+
+
+What you'll learn
+- Animations
+- State management
+- Load and display data
+
+
+
+
+HighScoresScreen
+
+- "forget" to emit fethcing
+- "forget" to add Cubit on GSD
+- Wrap hole `when` in Column, 
+  - shrinkWrap
+  - SafeArea
+  - Staggered animation

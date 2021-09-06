@@ -5,9 +5,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'game_cubit.freezed.dart';
 
 @freezed
-class GameState with _$GameState {
-  const GameState._();
-  const factory GameState({
+class GameCubitState with _$GameCubitState {
+  const GameCubitState._();
+  const factory GameCubitState({
     @Default(<SetCard>[]) List<SetCard> deck,
     @Default(<SetCard?>[]) List<SetCard?> board,
   }) = _SetCubitState;
@@ -17,8 +17,8 @@ class GameState with _$GameState {
   bool get canDraw3Extra => board.effectiveLength == 12 && deck.length >= 3;
 }
 
-class GameCubit extends Cubit<GameState> {
-  GameCubit() : super(const GameState());
+class GameCubit extends Cubit<GameCubitState> {
+  GameCubit() : super(const GameCubitState());
 
   void initializeGame() {
     final deck = newDeck()..shuffle();

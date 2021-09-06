@@ -21,6 +21,7 @@ class App extends HookWidget {
     return GlobalScopeDependencies(
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
+        // themeMode: MediaQuery.of(context).platformBrightness == Brightness.light ? ThemeMode.light : ThemeMode.dark,
         routerDelegate: _appAutoRouter.delegate(),
         routeInformationParser: _appAutoRouter.defaultRouteParser(),
         builder: (context, navigator) {

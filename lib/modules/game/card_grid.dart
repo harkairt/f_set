@@ -1,4 +1,4 @@
-import 'package:f_set/presentation/set_card_widget.dart';
+import 'package:f_set/modules/game/set_card_widget.dart';
 import 'package:f_set/set.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -9,12 +9,12 @@ class CardGrid extends HookWidget {
   const CardGrid({
     Key? key,
     required this.cards,
-    required this.selectedCards,
+    required this.highlightedCards,
     required this.onCardPressed,
   }) : super(key: key);
 
   final List<SetCard?> cards;
-  final List<SetCard?> selectedCards;
+  final List<SetCard?> highlightedCards;
   final Function(SetCard) onCardPressed;
 
   @override
@@ -51,7 +51,7 @@ class CardGrid extends HookWidget {
                         return SetCardWidget(
                           card: card,
                           duration: 100.seconds,
-                          highlight: selectedCards.contains(cards[index]),
+                          highlight: highlightedCards.contains(cards[index]),
                         );
                       },
                     ),

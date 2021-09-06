@@ -17,7 +17,7 @@ class AppTheme extends InheritedWidget {
   final Brightness brightness;
 
   @override
-  bool updateShouldNotify(AppTheme oldWidget) => false;
+  bool updateShouldNotify(AppTheme oldWidget) => true;
 
   static AppTheme of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<AppTheme>()!;
 
@@ -57,6 +57,9 @@ class AppTheme extends InheritedWidget {
   ColorScheme get colorScheme => isDark ? _darkColorScheme : _lightColorScheme;
   Color get appBarBackground => isDark ? Colors.grey.shade800 : Colors.white;
   Color get appBackground => isDark ? Colors.grey.shade700 : AppTheme.white;
+  Color get cardBackgroundColor => isDark ? Colors.grey.shade700 : AppTheme.white;
+  Color get cardBorderColor => isDark ? Colors.grey.shade200 : Colors.black;
+  Color get cardSilhouetteBorderColor => isDark ? Colors.grey.shade200 : Colors.grey.shade300;
 
   ThemeData get theme => ThemeData.from(
         colorScheme: colorScheme,
@@ -115,6 +118,7 @@ class AppTheme extends InheritedWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.hs)),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           padding: largeButtonPadding,
+          backgroundColor: secondary,
         ).copyWith(
           textStyle: buttonTextStyle,
           side: MaterialStateProperty.resolveWith<BorderSide>(

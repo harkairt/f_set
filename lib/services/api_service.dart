@@ -10,6 +10,7 @@ class ApiService {
 
   Future<Either<NetworkError, List<Score>>> getHighScores() async {
     try {
+      await Future<void>.delayed(const Duration(milliseconds: 1500));
       final highscores = await api.getHighScores();
       return Right(highscores);
     } on Exception catch (e) {
@@ -17,4 +18,3 @@ class ApiService {
     }
   }
 }
-

@@ -1,6 +1,6 @@
-import 'package:f_set/data/game_cubit.dart';
+import 'package:f_set/modules/game/data/game_cubit.dart';
+import 'package:f_set/modules/game/set_board.dart';
 import 'package:f_set/presentation/pop_guard.dart';
-import 'package:f_set/presentation/set_board.dart';
 import 'package:f_set/presentation/theme/scale.dart';
 import 'package:f_set/utils/type_scale.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,7 @@ class GameScreen extends HookWidget {
       context.read<GameCubit>().initializeGame();
     }, []);
 
-    return BlocListener<GameCubit, GameState>(
+    return BlocListener<GameCubit, GameCubitState>(
       listenWhen: (_, state) => state.setsOnBoard.isEmpty && state.deck.isEmpty,
       listener: (context, state) async => showAnimatedDialog<void>(
         context: context,

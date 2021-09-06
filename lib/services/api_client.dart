@@ -5,23 +5,38 @@ import 'package:supercharged/supercharged.dart';
 class ApiClient {
   ApiClient(this._dio);
 
-  // ignore: unused_field
   final Dio _dio;
 
   Future<List<Score>> getHighScores() async {
-    // use _dio to get score from server
+    // use _dio to get scores from server
     return [
       Score(
         name: 'Enikő',
         time: 2.5.minutes,
       ),
       Score(
-        name: 'Sasha',
+        name: 'Adél',
         time: 3.1.minutes,
       ),
       Score(
-        name: 'Oren',
+        name: 'Attila',
         time: 3.9.minutes,
+      ),
+      Score(
+        name: 'Zsuzsi',
+        time: 4.2.minutes,
+      ),
+      Score(
+        name: 'David',
+        time: 4.7.minutes,
+      ),
+      Score(
+        name: 'Jimmy',
+        time: 5.12.minutes,
+      ),
+      Score(
+        name: 'Oren',
+        time: 7.2.minutes,
       ),
     ];
   }
