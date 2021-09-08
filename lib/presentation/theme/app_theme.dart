@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:f_set/presentation/theme/scale.dart';
 import 'package:f_set/set.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final screenInset = EdgeInsets.only(bottom: 32.hs, left: 45.hs, right: 45.hs);
@@ -67,7 +68,11 @@ class AppTheme extends InheritedWidget {
         textButtonTheme: textButtonThemeData,
         outlinedButtonTheme: outlinedButtonThemeData,
         elevatedButtonTheme: elevatedButtonThemeData,
-        appBarTheme: AppBarTheme(color: appBarBackground, foregroundColor: onPrimary),
+        appBarTheme: AppBarTheme(
+          color: appBarBackground,
+          foregroundColor: onPrimary,
+          // systemOverlayStyle: systemOverlayStyle,
+        ),
         scaffoldBackgroundColor: appBackground,
         backgroundColor: appBackground,
         iconTheme: IconThemeData(color: onPrimary),
@@ -185,7 +190,7 @@ final _darkColorScheme = ColorScheme.fromSwatch(
   primarySwatch: createMaterialColor(Colors.indigo),
   accentColor: Colors.pink,
   cardColor: Colors.grey.shade700,
-);
+).copyWith();
 
 MaterialColor createMaterialColor(Color color) {
   final List<double> strengths = [.05];

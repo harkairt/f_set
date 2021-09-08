@@ -4,7 +4,6 @@ import 'package:f_set/presentation/theme/app_theme.dart';
 import 'package:f_set/presentation/theme/scale.dart';
 import 'package:f_set/utils/ignore_text_scale.dart';
 import 'package:f_set/utils/non_glowing_scroll_behavior.dart';
-import 'package:f_set/utils/theme_matching_overlay_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -21,12 +20,9 @@ class App extends HookWidget {
     return GlobalScopeDependencies(
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
-        // themeMode: MediaQuery.of(context).platformBrightness == Brightness.light ? ThemeMode.light : ThemeMode.dark,
         routerDelegate: _appAutoRouter.delegate(),
         routeInformationParser: _appAutoRouter.defaultRouteParser(),
-        builder: (context, navigator) {
-          return AppConfigurations(child: navigator!);
-        },
+        builder: (context, navigator) => AppConfigurations(child: navigator!),
       ),
     );
   }
@@ -51,14 +47,12 @@ class AppConfigurations extends StatelessWidget {
       brightness: MediaQuery.of(context).platformBrightness,
       child: Builder(
         builder: (context) {
-          return ThemeMatchingOverlayStyle(
-            child: Theme(
-              data: AppTheme.of(context).theme,
-              child: IgnoreTextScale(
-                child: ScrollConfiguration(
-                  behavior: const NonGlowingScrollBehavior(),
-                  child: child,
-                ),
+          return Theme(
+            data: AppTheme.of(context).theme,
+            child: IgnoreTextScale(
+              child: ScrollConfiguration(
+                behavior: const NonGlowingScrollBehavior(),
+                child: child,
               ),
             ),
           );
