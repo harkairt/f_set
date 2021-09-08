@@ -22,11 +22,11 @@ class GlobalScopeDependencies extends HookWidget {
       BlocProvider<GameCubit>(
         create: (context) => GameCubit(),
       ),
-      BlocProvider<HighScoresCubit>(
-        create: (context) => HighScoresCubit(
-          apiService: _apiService.value
-        ),
-      ),
+      // BlocProvider<HighScoresCubit>(
+      //   create: (context) => HighScoresCubit(
+      //     apiService: _apiService.value
+      //   ),
+      // ),
     ], child: child);
   }
 }

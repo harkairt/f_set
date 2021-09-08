@@ -1,4 +1,3 @@
-import 'package:f_set/presentation/hero.dart';
 import 'package:f_set/presentation/theme/app_theme.dart';
 import 'package:f_set/presentation/theme/scale.dart';
 import 'package:f_set/set.dart';
@@ -8,8 +7,6 @@ import 'package:f_set/utils/type_scale.dart';
 import 'package:f_set/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
-
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({Key? key}) : super(key: key);
@@ -25,65 +22,27 @@ class MenuScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Spacer(flex: 2),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TypeScale.h1(
-                    Text('S', style: TextStyle(color: AppTheme.cardColorMap[ColorType.yellow])),
-                  ),
-                  TypeScale.h1(Text(
-                    'E',
-                    style: TextStyle(
-                      foreground: Paint()
-                        ..style = PaintingStyle.stroke
-                        ..strokeWidth = 1
-                        ..color = AppTheme.cardColorMap[ColorType.blue]!,
-                    ),
-                  )),
-                  BandedText(text: 'T', color: AppTheme.cardColorMap[ColorType.green]!),
-                ],
-              ),
+              const _SetTitle(),
               const Spacer(flex: 2),
-              AnimationLimiter(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: AnimationConfiguration.toStaggeredList(
-                    duration: const Duration(milliseconds: 700),
-                    childAnimationBuilder: (widget) => SlideAnimation(
-                      curve: Curves.easeOutCubic,
-                      verticalOffset: -20.0,
-                      child: FadeInAnimation(
-                        child: widget,
-                      ),
-                    ),
-                    children: [
-                      ElevatedButton(
-                        child: const TypeScale.h3(
-                          Text('Start'),
-                        ),
-                        onPressed: () => context.router.navigate(const GameRoute()),
-                      ),
-                      SizedBox(height: 8.hs),
-                      OutlinedButton(
-                        child: const TypeScale.h3(
-                          Text('Learn'),
-                        ),
-                        onPressed: () => context.router.navigate(const InstructionsRoute()),  
-                      ),
-                      SizedBox(height: 8.hs),
-                      MaterialHero(
-                        tag: 'yes',
-                        child: OutlinedButton(
-                          child: const TypeScale.h3(
-                            Text('High scores'),
-                          ),
-                          onPressed: () => context.router.navigate(const HighScoresRoute()),
-                        ),
-                      ),
-                    ],
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  ElevatedButton(
+                    child: const TypeScale.h3(Text('Start')),
+                    onPressed: () => context.router.navigate(const GameRoute()),
                   ),
-                )
+                  SizedBox(height: 8.hs),
+                  OutlinedButton(
+                    child: const TypeScale.h3(Text('Learn')),
+                    onPressed: () => context.router.navigate(const InstructionsRoute()),
+                  ),
+                  SizedBox(height: 8.hs),
+                  OutlinedButton(
+                    child: const TypeScale.h3(Text('High scores')),
+                    onPressed: () {},
+                  ),
+                ],
               ),
               const Spacer(flex: 5),
             ],
@@ -93,6 +52,68 @@ class MenuScreen extends StatelessWidget {
     );
   }
 }
+
+class _SetTitle extends StatelessWidget {
+  const _SetTitle({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TypeScale.h1(
+          Text('S', style: TextStyle(color: AppTheme.cardColorMap[ColorType.yellow])),
+        ),
+        TypeScale.h1(Text(
+          'E',
+          style: TextStyle(
+            foreground: Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 1
+              ..color = AppTheme.cardColorMap[ColorType.blue]!,
+          ),
+        )),
+        BandedText(text: 'T', color: AppTheme.cardColorMap[ColorType.green]!),
+      ],
+    );
+  }
+}
+
+// AnimationConfiguration.toStaggeredList(
+//                     duration: const Duration(milliseconds: 700),
+//                     childAnimationBuilder: (child) => SlideAnimation(
+//                       curve: Curves.easeOutCubic,
+//                       verticalOffset: -20.0,
+//                       child: FadeInAnimation(
+//                         child: child,
+//                       ),
+//                     ),
+//                     children: [
+//                       ElevatedButton(
+//                         child: const TypeScale.h3(
+//                           Text('Start'),
+//                         ),
+//                         onPressed: () => context.router.navigate(const GameRoute()),
+//                       ),
+//                       SizedBox(height: 8.hs),
+//                       OutlinedButton(
+//                         child: const TypeScale.h3(
+//                           Text('Learn'),
+//                         ),
+//                         onPressed: () => context.router.navigate(const InstructionsRoute()),
+//                       ),
+//                       SizedBox(height: 8.hs),
+//                       MaterialHero(
+//                         tag: 'yes',
+//                         child: OutlinedButton(
+//                           child: const TypeScale.h3(
+//                             Text('High scores'),
+//                           ),
+//                           onPressed: () => context.router.navigate(const HighScoresRoute()),
+//                         ),
+//                       ),
+//                     ],
+//                   )
 
 class BandedText extends StatelessWidget {
   const BandedText({Key? key, required this.text, required this.color}) : super(key: key);

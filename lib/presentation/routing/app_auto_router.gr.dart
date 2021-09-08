@@ -8,7 +8,6 @@ import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
 
 import '../../modules/game/game_screen.dart' as _i5;
-import '../../modules/high_scores/high_scores_screen.dart' as _i6;
 import '../../modules/instructions/instructions_screen.dart' as _i4;
 import '../screens/menu_screen.dart' as _i3;
 
@@ -41,14 +40,6 @@ class AppAutoRouter extends _i1.RootStackRouter {
         },
         transitionsBuilder: _i1.TransitionsBuilders.fadeIn,
         opaque: true,
-        barrierDismissible: false),
-    HighScoresRoute.name: (routeData) => _i1.CustomPage<void>(
-        routeData: routeData,
-        builder: (_) {
-          return const _i6.HighScoresScreen();
-        },
-        transitionsBuilder: _i1.TransitionsBuilders.fadeIn,
-        opaque: true,
         barrierDismissible: false)
   };
 
@@ -56,8 +47,7 @@ class AppAutoRouter extends _i1.RootStackRouter {
   List<_i1.RouteConfig> get routes => [
         _i1.RouteConfig(MenuRoute.name, path: '/'),
         _i1.RouteConfig(InstructionsRoute.name, path: '/instructions-screen'),
-        _i1.RouteConfig(GameRoute.name, path: '/game-screen'),
-        _i1.RouteConfig(HighScoresRoute.name, path: '/high-scores-screen')
+        _i1.RouteConfig(GameRoute.name, path: '/game-screen')
       ];
 }
 
@@ -77,10 +67,4 @@ class GameRoute extends _i1.PageRouteInfo {
   const GameRoute() : super(name, path: '/game-screen');
 
   static const String name = 'GameRoute';
-}
-
-class HighScoresRoute extends _i1.PageRouteInfo {
-  const HighScoresRoute() : super(name, path: '/high-scores-screen');
-
-  static const String name = 'HighScoresRoute';
 }

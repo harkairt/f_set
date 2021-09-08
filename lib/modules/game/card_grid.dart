@@ -27,38 +27,28 @@ class CardGrid extends HookWidget {
       children: List.generate(
         cards.length,
         (int index) {
-          return AnimationConfiguration.staggeredGrid(
-            position: index,
-            duration: 250.milliseconds,
-            delay: 100.milliseconds,
-            columnCount: 3,
-            child: CardAppearAnimation(
-              child: Builder(
-                builder: (context) {
-                  return GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      onCardPressed(cards[index]!);
-                    },
-                    child: Builder(
-                      builder: (context) {
-                        final card = cards[index];
+          return Builder(
+            builder: (context) {
+              return GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () => onCardPressed(cards[index]!),
+                child: Builder(
+                  builder: (context) {
+                    final card = cards[index];
 
-                        if (card == null) {
-                          return const EmptyCard();
-                        }
+                    if (card == null) {
+                      return const EmptyCard();
+                    }
 
-                        return SetCardWidget(
-                          card: card,
-                          duration: 100.seconds,
-                          highlight: highlightedCards.contains(cards[index]),
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
+                    return SetCardWidget(
+                      card: card,
+                      duration: 100.seconds,
+                      highlight: highlightedCards.contains(cards[index]),
+                    );
+                  },
+                ),
+              );
+            },
           );
         },
       ),
@@ -84,3 +74,38 @@ class CardAppearAnimation extends StatelessWidget {
     );
   }
 }
+
+
+// return AnimationConfiguration.staggeredGrid(
+//             position: index,
+//             duration: 250.milliseconds,
+//             delay: 100.milliseconds,
+//             columnCount: 3,
+//             child: CardAppearAnimation(
+//               child: Builder(
+//                 builder: (context) {
+//                   return GestureDetector(
+//                     behavior: HitTestBehavior.translucent,
+//                     onTap: () {
+//                       onCardPressed(cards[index]!);
+//                     },
+//                     child: Builder(
+//                       builder: (context) {
+//                         final card = cards[index];
+
+//                         if (card == null) {
+//                           return const EmptyCard();
+//                         }
+
+//                         return SetCardWidget(
+//                           card: card,
+//                           duration: 100.seconds,
+//                           highlight: highlightedCards.contains(cards[index]),
+//                         );
+//                       },
+//                     ),
+//                   );
+//                 },
+//               ),
+//             ),
+//           );
